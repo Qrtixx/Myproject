@@ -1,0 +1,28 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Мой блог{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'blog/style.css' %}">
+</head>
+<body>
+<header class="header"><div class="container nav">
+  <a class="brand" href="{% url 'home' %}">Мой блог</a>
+  <nav>
+    {% if user.is_authenticated %}
+      <span>Привет, {{ user.username }}!</span>
+      <a href="{% url 'article_create' %}">Новая статья</a>
+      <form class="inline" action="{% url 'logout' %}" method="post">{% csrf_token %}<button>Выйти</button></form>
+    {% else %}
+      <a href="{% url 'login' %}">Войти</a><a href="{% url 'register' %}">Регистрация</a>
+    {% endif %}
+  </nav>
+</div></header>
+<main class="container">
+  {% for message in messages %}<div class="message">{{ message }}</div>{% endfor %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>
