@@ -1,0 +1,1 @@
+{% extends 'blog/base.html' %}{% block content %}<h1>Регистрация</h1><form method="post" class="form">{% csrf_token %}{{ form.as_p }}<button class="button">Создать аккаунт</button></form>{% endblock %}

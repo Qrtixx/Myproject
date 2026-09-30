@@ -1,0 +1,9 @@
+{% extends 'blog/base.html' %}
+{% block title %}{{ object.title }} — Мой блог{% endblock %}
+{% block content %}
+<article class="detail"><h1>{{ object.title }}</h1><p class="meta">{{ object.author }} · {{ object.publish_date|date:"d.m.Y H:i" }}</p>
+{% if object.image %}<img class="hero" src="{{ object.image.url }}" alt="{{ object.title }}">{% endif %}<div class="content">{{ object.content|linebreaks }}</div>
+{% if user == object.author %}<a class="button" href="{% url 'article_edit' object.pk %}">Редактировать</a> <a class="button danger" href="{% url 'article_delete' object.pk %}">Удалить</a>{% endif %}</article>
+<section><h2>Комментарии ({{ object.comments.count }})</h2>{% for comment in object.comments.all %}<div class="comment"><b>{{ comment.author }}</b> <span class="meta">{{ comment.created_at|date:"d.m.Y H:i" }}</span><p>{{ comment.text }}</p></div>{% empty %}<p>Комментариев пока нет.</p>{% endfor %}
+{% if user.is_authenticated %}<form method="post">{% csrf_token %}{{ comment_form.as_p }}<button class="button" type="submit">Добавить комментарий</button></form>{% else %}<p><a href="{% url 'login' %}">Войдите</a>, чтобы оставить комментарий.</p>{% endif %}</section>
+{% endblock %}
